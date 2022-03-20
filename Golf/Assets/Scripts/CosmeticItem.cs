@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using MK.Toon;
 
 public class CosmeticItem : MonoBehaviour {
     [SerializeField] Cosmetic data;
@@ -52,7 +53,10 @@ public class CosmeticItem : MonoBehaviour {
             bag = GameObject.Find("GolfBag").transform.GetChild(0).gameObject;
             cart = GameObject.Find("GolfCartSwag").transform.GetChild(6).gameObject;
             defaultMat = data.PlayerDefaultMaterial;
-            thisMat = model.transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().sharedMaterial;
+            //thisMat = model.transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().sharedMaterial;
+            thisMat = new Material(Shader.Find("MK/Toon/URP/Standard/Simple + Outline"));
+            thisMat.CopyPropertiesFromMaterial(model.transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().sharedMaterial);
+            //setMat = new Material(Shader.Find("Specular"));
         } else if (type == 2) {
             thisTrail = model.GetComponent<TrailRenderer>().colorGradient;
         }
@@ -144,6 +148,7 @@ public class CosmeticItem : MonoBehaviour {
             cosmeticInstance.transform.position = player.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(2).GetChild(0).position;
             cosmeticInstance.transform.localEulerAngles = rotation;
         } else if (t == 1) {
+            Properties.outlineSize.SetValue(thisMat,120);
             player.transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().material = thisMat;
             bag.GetComponent<MeshRenderer>().material = thisMat;
             Material[] m = cart.GetComponent<MeshRenderer>().materials;
@@ -162,6 +167,10 @@ public class CosmeticItem : MonoBehaviour {
             Destroy(cosmeticInstance);
         } else if (t == 1) {
             player.transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().material = defaultMat;
+            bag.GetComponent<MeshRenderer>().material = defaultMat;
+            Material[] m = cart.GetComponent<MeshRenderer>().materials;
+            m[1] = defaultMat;
+            cart.GetComponent<MeshRenderer>().materials = m;
             GameEvents.current.SetStartMaterial(defaultMat);
         } else if (t == 2) {
             GameEvents.current.LoadTrail(null);

@@ -39,7 +39,7 @@ public class Manager : MonoBehaviour {
 
     //Upgrades
     float fireRate = 0.5f;
-    int maxBounces = 4;
+    int maxBounces = 1;
     int income = 1;
     int fireRateLevel = 1;
     int fireRateCost = 100;
@@ -55,6 +55,8 @@ public class Manager : MonoBehaviour {
     int[,,] cosmetics = new int[3,7,2];
     Gradient currTrail;
     [SerializeField] Material defaultMat;
+    string defaultMatShader;
+    float defaultMatR,defaultMatG,defaultMatB,defaultMatA;
 
     //Game loop
     bool playGame = false;
@@ -78,6 +80,11 @@ public class Manager : MonoBehaviour {
     public int IncomeCost {get => incomeCost;}
     public int[,,] Cosmetics {get => cosmetics;}
     public int CurrTheme {get => currTheme;}
+    public string DefaultMatShader {get => defaultMatShader;}
+    public float DefaultMatR {get => defaultMatR;}
+    public float DefaultMatG {get => defaultMatG;}
+    public float DefaultMatB {get => defaultMatB;}
+    public float DefaultMatA {get => defaultMatA;}
 
 
     void Start() {
@@ -104,10 +111,11 @@ public class Manager : MonoBehaviour {
         playerAnimator = player.GetComponent<Animator>();
 
         //LOAD GAME DATA
-        //DeleteData();
+        DeleteData();
         //LoadData();
 
         money = 20000;
+        level = 10;
 
         //Set player default material
         player.transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().sharedMaterial = defaultMat;
@@ -235,6 +243,8 @@ public class Manager : MonoBehaviour {
         hapticsEnabled = data.hapticsEnabled;
         cosmetics = data.cosmetics;
         currTheme = data.currTheme;
+        defaultMat = new Material(Shader.Find(data.shader));
+        defaultMat.color = new Color(data.r, data.g, data.b, data.a);
     }
 
     IEnumerator SpawnEnemy() {
@@ -350,6 +360,7 @@ public class Manager : MonoBehaviour {
         PlayerPrefs.SetInt("Money", money);
         GameEvents.current.MoneyChange();
         CheckMoney();
+        SaveData();
     }
 
     public void HandleDefeat() {
@@ -363,6 +374,7 @@ public class Manager : MonoBehaviour {
         PlayerPrefs.SetInt("Level", level);
         GameEvents.current.LevelChange(level);
         calculateDifficulty(level);
+        RewardVictory(2);
     }
 
     void HandleReward() {
@@ -374,6 +386,7 @@ public class Manager : MonoBehaviour {
         StartedSpawning = null;
         playGame = false;
         playerAnimator.SetBool("Swing", false);
+        earned = 0;
         Enemy.ResetStatics();
         GameEvents.current.DeleteAnimation();
         GameObject[] e = GameObject.FindGameObjectsWithTag("Enemy");
@@ -420,6 +433,11 @@ public class Manager : MonoBehaviour {
 
     void SetPlayerMaterial(Material mat) {
         defaultMat = mat;
+        defaultMatShader = defaultMat.shader.name;
+        defaultMatR = defaultMat.color.r;
+        defaultMatG = defaultMat.color.g;
+        defaultMatB = defaultMat.color.b;
+        defaultMatA = defaultMat.color.a;
     }
 
     void SendCosmeticStates() {
