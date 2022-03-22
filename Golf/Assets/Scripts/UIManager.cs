@@ -261,7 +261,7 @@ public class UIManager : MonoBehaviour
         UpdateLevel(level);
         ResetProgressBar();
         victoryEarnedText.text = "You earned " + earned.ToString() + " coins";
-        victoryDoubleButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Claim 2x\n" + (earned*2).ToString();
+        victoryDoubleButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Get 2x\n" + (earned*2).ToString();
         victorySkipButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Get " + earned.ToString();
         ingameUI.SetActive(false);
         victoryUI.SetActive(true);
