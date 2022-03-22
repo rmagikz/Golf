@@ -114,7 +114,7 @@ public class Manager : MonoBehaviour {
         DeleteData();
         //LoadData();
 
-        money = 20000;
+        money = 50000;
         level = 10;
 
         //Set player default material
@@ -386,7 +386,6 @@ public class Manager : MonoBehaviour {
         StartedSpawning = null;
         playGame = false;
         playerAnimator.SetBool("Swing", false);
-        earned = 0;
         Enemy.ResetStatics();
         GameEvents.current.DeleteAnimation();
         GameObject[] e = GameObject.FindGameObjectsWithTag("Enemy");
@@ -415,13 +414,13 @@ public class Manager : MonoBehaviour {
         bool disable1 = false;
         bool disable2 = false;
         bool disable3 = false;
-        if (money < fireRateCost) {
+        if (money < fireRateCost || fireRateLevel >= upgradeMaxLevel) {
             disable1 = true;
         }
-        if (money < ballBounceCost) {
+        if (money < ballBounceCost || ballBounceLevel >= 5) {
             disable2 = true;
         }
-        if (money < incomeCost) {
+        if (money < incomeCost || incomeLevel >= upgradeMaxLevel) {
             disable3 = true;
         }
         GameEvents.current.CheckAfford(disable1, disable2, disable3);
