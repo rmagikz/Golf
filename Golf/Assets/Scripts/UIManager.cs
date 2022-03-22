@@ -18,8 +18,8 @@ public class UIManager : MonoBehaviour
     Image soundsButtonImage;
     Image hapticsButtonImage;
 
-    Color colorEnabled = new Color32(117,255,131,255);
-    Color colorDisabled = new Color32(255,117,131,255);
+    Color colorEnabled = new Color32(71,245,127,255);
+    Color colorDisabled = new Color32(200,35,44,255);
 
     Stack<Transform> menuStack = new Stack<Transform>();
 

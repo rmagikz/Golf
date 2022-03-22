@@ -148,7 +148,7 @@ public class CosmeticItem : MonoBehaviour {
             cosmeticInstance.transform.position = player.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(2).GetChild(0).position;
             cosmeticInstance.transform.localEulerAngles = rotation;
         } else if (t == 1) {
-            Properties.outlineSize.SetValue(thisMat,120);
+            Properties.outlineSize.SetValue(thisMat,70);
             player.transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().material = thisMat;
             bag.GetComponent<MeshRenderer>().material = thisMat;
             Material[] m = cart.GetComponent<MeshRenderer>().materials;
